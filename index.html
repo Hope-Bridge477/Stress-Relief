@@ -1,25 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>CalmMind 🌿</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenity | Your Space for Peace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:italic,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .serif { font-family: 'Lora', serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .fade-in { animation: fadeIn 1.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
-<body>
+<body class="flex flex-col items-center justify-center p-6 text-slate-800">
 
-<div class="container">
-  <h1>🌿 CalmMind</h1>
-  <p class="subtitle">Tell me what's on your mind...</p>
+    <header class="text-center mb-12 fade-in">
+        <h1 class="serif text-5xl mb-4 text-slate-700">Serenity</h1>
+        <p class="text-lg font-light tracking-wide text-slate-500 uppercase">A sanctuary for your thoughts</p>
+    </header>
 
-  <textarea id="userInput" placeholder="Type your problem here..."></textarea>
+    <main class="w-full max-w-2xl glass-card rounded-3xl p-10 shadow-2xl fade-in">
+        <div id="interaction-area">
+            <p class="serif text-xl mb-6 leading-relaxed italic text-slate-600">
+                What is weighing on your mind today? Speak freely; this is a safe space.
+            </p>
+            
+            <textarea id="userInput" 
+                class="w-full h-40 p-4 rounded-xl border-none bg-white/50 focus:ring-2 focus:ring-slate-300 transition-all resize-none text-lg mb-4 shadow-inner"
+                placeholder="Type your feelings here..."></textarea>
 
-  <button onclick="generateResponse()">Get Support 💬</button>
-  <button onclick="startBreathing()">Breathing Exercise 🌬️</button>
+            <div class="flex justify-between items-center">
+                <p id="status" class="text-sm text-slate-400 italic"></p>
+                <button onclick="getRelief()" 
+                    class="px-8 py-3 bg-slate-700 text-white rounded-full hover:bg-slate-800 transition-all shadow-lg active:scale-95 font-medium">
+                    Exhale
+                </button>
+            </div>
+        </div>
 
-  <div id="responseBox"></div>
-</div>
+        <div id="responseContainer" class="hidden mt-8 pt-8 border-t border-slate-200">
+            <div id="aiResponse" class="serif text-xl leading-relaxed text-slate-700 italic"></div>
+            <button onclick="resetApp()" 
+                class="mt-8 text-sm text-slate-400 hover:text-slate-600 underline transition-all">
+                Start a new session
+            </button>
+        </div>
+    </main>
 
-<script src="script.js"></script>
+    <footer class="mt-16 text-slate-400 text-sm font-light">
+        Quiet your mind. Find your center.
+    </footer>
+
+    <script>
+        async function getRelief() {
+            const input = document.getElementById('userInput').value;
+            const status = document.getElementById('status');
+            const responseContainer = document.getElementById('responseContainer');
+            const aiResponse = document.getElementById('aiResponse');
+            const interactionArea = document.getElementById('interaction-area');
+
+            if (!input.trim()) return;
+
+            status.innerText = "Listening thoughtfully...";
+            
+            try {
+                // NOTE: Replace '/api/relief' with your actual backend endpoint
+                const response = await fetch('/api/relief', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: input })
+                });
+
+                const data = await response.json();
+                
+                interactionArea.classList.add('opacity-50', 'pointer-events-none');
+                responseContainer.classList.remove('hidden');
+                
+                // Typing effect for the AI response
+                typeWriter(data.reply, aiResponse);
+                status.innerText = "";
+
+            } catch (error) {
+                status.innerText = "The connection is momentarily disrupted. Take a deep breath.";
+            }
+        }
+
+        function typeWriter(text, element) {
+            let i = 0;
+            element.innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, 30);
+                }
+            }
+            type();
+        }
+
+        function resetApp() {
+            location.reload();
+        }
+    </script>
 </body>
 </html>
 
