@@ -3,142 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serenity | A Space to Breathe</title>
+    <title>Sōzen | The Art of Release</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&family=Playfair+Display:italic,wght@0,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:italic,wght@0,300;1,300&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --accent: #64748b;
+            --primary: #1a1a1a;
+            --soft-blue: #e2e8f0;
         }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            background-color: #000; /* Deep focus background */
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
             overflow: hidden;
-            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
-        .serif { font-family: 'Playfair Display', serif; }
-        
-        /* The Breathing Aura */
-        .aura {
+
+        /* The Liquid Aura - Animated Background */
+        .aura-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #000 100%);
+            z-index: -1;
+        }
+
+        .blob {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, rgba(203, 213, 225, 0.4) 0%, rgba(248, 250, 252, 0) 70%);
+            background: linear-gradient(135deg, rgba(148, 163, 184, 0.2) 0%, rgba(30, 41, 59, 0.2) 100%);
+            filter: blur(80px);
             border-radius: 50%;
+            animation: move 20s infinite alternate;
             z-index: -1;
-            animation: breathe 8s infinite ease-in-out;
         }
 
-        @keyframes breathe {
-            0%, 100% { width: 500px; height: 500px; opacity: 0.5; }
-            50% { width: 750px; height: 750px; opacity: 0.8; }
+        @keyframes move {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(20%, 20%); }
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+        .serif { font-family: 'Cormorant Garamond', serif; }
+
+        /* Elegant Container */
+        .zen-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem;
+            border-radius: 100px 100px 0 0; /* Modern Architectural Shape */
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        .input-focus:focus {
+        .input-area {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            color: #fff;
+            font-size: 1.5rem;
+            padding: 1rem;
+            text-align: center;
             outline: none;
-            border-bottom: 1px solid #94a3b8;
+            transition: border-color 0.8s;
         }
 
-        .fade-up { animation: fadeUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .input-area:focus {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* Button Styling */
+        .btn-zen {
+            margin-top: 3rem;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+
+        .btn-zen:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Hidden Class for Transitions */
+        .hidden-element {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body>
 
-    <div class="aura"></div>
+    <div class="aura-bg">
+        <div class="blob" style="top: 10%; left: 10%;"></div>
+        <div class="blob" style="bottom: 10%; right: 10%; animation-delay: -5s;"></div>
+    </div>
 
-    <main class="max-w-4xl w-full px-6 text-center fade-up">
-        <!-- Header Section -->
-        <header class="mb-16">
-            <h1 class="serif text-6xl md:text-7xl font-light tracking-tight text-slate-800 mb-6">
-                Exhale the <span class="italic font-normal">noise.</span>
-            </h1>
-            <p class="text-slate-500 tracking-[0.2em] uppercase text-xs font-semibold">Sanctuary for the Mind</p>
-        </header>
-
-        <!-- Interaction Area -->
-        <div id="app-content" class="relative">
-            <div id="input-view" class="transition-all duration-1000">
-                <textarea id="userText" 
-                    class="w-full bg-transparent text-2xl md:text-3xl text-center text-slate-700 placeholder-slate-300 input-focus transition-all duration-500 serif h-32 resize-none"
-                    placeholder="Write what weighs on you..."></textarea>
-                
-                <div class="mt-12">
-                    <button onclick="processRelease()" 
-                        class="px-12 py-4 rounded-full border border-slate-200 text-slate-500 hover:text-slate-800 hover:border-slate-800 hover:bg-white transition-all duration-500 tracking-widest text-xs uppercase font-bold">
-                        Release Into Silence
-                    </button>
-                </div>
-            </div>
-
-            <!-- The Response View (Hidden initially) -->
-            <div id="response-view" class="hidden opacity-0 transition-all duration-1000 flex flex-col items-center">
-                <div class="glass-panel p-10 md:p-16 rounded-[40px] max-w-2xl">
-                    <p id="dynamic-message" class="serif text-3xl md:text-4xl text-slate-700 italic leading-snug"></p>
-                    <div class="h-px w-20 bg-slate-200 my-10 mx-auto"></div>
-                    <button onclick="resetSpace()" class="text-slate-400 hover:text-slate-600 transition-colors text-xs tracking-widest uppercase font-bold">
-                        Begin Anew
-                    </button>
-                </div>
-            </div>
+    <div id="main-container" class="zen-card">
+        <div id="prompt-view">
+            <h2 class="text-xs tracking-[0.5em] uppercase text-slate-400 mb-8 font-light">The Quiet Space</h2>
+            <h1 class="serif text-5xl md:text-7xl italic font-light mb-12">Leave your <span class="font-normal">burden</span> here.</h1>
+            
+            <textarea id="userInput" class="serif input-area" placeholder="What is heavy on your soul?"></textarea>
+            
+            <button onclick="transformEnergy()" class="btn-zen">Exhale</button>
         </div>
-    </main>
 
-    <footer class="fixed bottom-10 text-slate-400 text-[10px] tracking-[0.3em] uppercase">
-        Quietly hosted on GitHub &bull; Just for you
+        <div id="response-view" class="hidden-element absolute inset-0 flex flex-col items-center justify-center p-12 text-center">
+            <h3 id="wisdom-text" class="serif text-4xl md:text-5xl italic leading-relaxed text-slate-200"></h3>
+            <div class="w-12 h-[1px] bg-white/30 my-10"></div>
+            <button onclick="resetSpace()" class="text-[0.6rem] tracking-[0.4em] uppercase text-slate-500 hover:text-white transition-all">Dissolve</button>
+        </div>
+    </div>
+
+    <footer class="fixed bottom-8 text-[0.6rem] tracking-[0.6em] uppercase text-slate-600">
+        Sōzen &bull; Mindful Architecture
     </footer>
 
     <script>
-        const wisdom = [
-            "This moment is temporary. Your peace is permanent.",
-            "You are doing enough. You have always been enough.",
-            "Softness is not weakness; it is how we survive the storm.",
-            "Allow yourself the grace of a single breath. Just one.",
-            "The weight you carry is heavy, but you need not carry it alone today.",
-            "Rest is a productive act. Let your mind settle like fallen snow.",
-            "Beyond the noise, there is a quiet strength within you."
+        const teachings = [
+            "You are the sky. The thoughts are just weather.",
+            "If it is out of your hands, it deserves a freedom from your mind.",
+            "You do not have to be 'okay' to be worthy of peace.",
+            "The stars can only shine because of the darkness you fear.",
+            "In the middle of movement and chaos, keep stillness inside of you.",
+            "Your strength is not in how much you carry, but in what you let go."
         ];
 
-        function processRelease() {
-            const text = document.getElementById('userText').value;
-            if (!text.trim()) return;
+        function transformEnergy() {
+            const input = document.getElementById('userInput').value;
+            if (!input.trim()) return;
 
-            const inputView = document.getElementById('input-view');
+            const promptView = document.getElementById('prompt-view');
             const responseView = document.getElementById('response-view');
-            const message = document.getElementById('dynamic-message');
+            const wisdomText = document.getElementById('wisdom-text');
+            const container = document.getElementById('main-container');
 
-            // Animation sequence
-            inputView.style.opacity = '0';
-            inputView.style.transform = 'scale(0.95)';
+            // Phase 1: Dissolve the input
+            promptView.style.transition = "all 1s ease";
+            promptView.classList.add('hidden-element');
 
+            // Phase 2: Transform the card
             setTimeout(() => {
-                inputView.classList.add('hidden');
-                responseView.classList.remove('hidden');
+                promptView.style.display = "none";
+                responseView.style.position = "relative";
+                responseView.classList.add('reveal');
                 
-                // Pick a unique message
-                message.innerText = wisdom[Math.floor(Math.random() * wisdom.length)];
-                
-                setTimeout(() => {
-                    responseView.style.opacity = '1';
-                    responseView.style.transform = 'translateY(0)';
-                }, 100);
-            }, 800);
+                // Set the wisdom
+                wisdomText.innerText = teachings[Math.floor(Math.random() * teachings.length)];
+            }, 1000);
         }
 
         function resetSpace() {
-            location.reload();
+            const container = document.getElementById('main-container');
+            container.style.opacity = "0";
+            setTimeout(() => {
+                location.reload();
+            }, 800);
         }
+
+        // Mouse interaction for Aura
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelectorAll('.blob');
+            const x = (e.clientX / window.innerWidth) * 50;
+            const y = (e.clientY / window.innerHeight) * 50;
+            blobs.forEach(b => {
+                b.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
     </script>
 </body>
 </html>
