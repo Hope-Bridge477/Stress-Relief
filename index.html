@@ -3,66 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serenity | Relief</title>
+    <title>Serenity | A Space to Breathe</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&family=Playfair+Display:italic,wght@0,400;1,700&display=swap" rel="stylesheet">
     <style>
-        body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; font-family: sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        :root {
+            --bg-color: #f8fafc;
+            --accent: #64748b;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            color: #1e293b;
+        }
+        .serif { font-family: 'Playfair Display', serif; }
+        
+        /* The Breathing Aura */
+        .aura {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(203, 213, 225, 0.4) 0%, rgba(248, 250, 252, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: breathe 8s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { width: 500px; height: 500px; opacity: 0.5; }
+            50% { width: 750px; height: 750px; opacity: 0.8; }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-focus:focus {
+            outline: none;
+            border-bottom: 1px solid #94a3b8;
+        }
+
+        .fade-up { animation: fadeUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="flex items-center justify-center p-6">
-    <div class="glass max-w-xl w-full rounded-3xl p-8 shadow-2xl">
-        <h1 class="text-3xl font-light text-slate-700 mb-2">Serenity</h1>
-        <p class="text-slate-500 mb-6 italic">What is on your mind? We are listening.</p>
-        
-        <textarea id="userInput" class="w-full h-40 p-4 rounded-xl border-none shadow-inner mb-4 focus:ring-2 focus:ring-slate-300 outline-none" placeholder="Share your thoughts..."></textarea>
-        
-        <div class="flex justify-between items-center">
-            <span id="status" class="text-sm text-slate-400"></span>
-            <button onclick="getRelief()" id="sendBtn" class="bg-slate-700 text-white px-8 py-2 rounded-full hover:bg-slate-800 transition-all">Exhale</button>
-        </div>
+<body class="flex items-center justify-center min-h-screen">
 
-        <div id="resultBox" class="hidden mt-8 p-6 bg-white/50 rounded-xl border border-white">
-            <p id="aiResponse" class="text-slate-700 leading-relaxed italic text-lg"></p>
-            <button onclick="window.location.reload()" class="mt-4 text-xs text-slate-400 underline">Start Again</button>
+    <div class="aura"></div>
+
+    <main class="max-w-4xl w-full px-6 text-center fade-up">
+        <!-- Header Section -->
+        <header class="mb-16">
+            <h1 class="serif text-6xl md:text-7xl font-light tracking-tight text-slate-800 mb-6">
+                Exhale the <span class="italic font-normal">noise.</span>
+            </h1>
+            <p class="text-slate-500 tracking-[0.2em] uppercase text-xs font-semibold">Sanctuary for the Mind</p>
+        </header>
+
+        <!-- Interaction Area -->
+        <div id="app-content" class="relative">
+            <div id="input-view" class="transition-all duration-1000">
+                <textarea id="userText" 
+                    class="w-full bg-transparent text-2xl md:text-3xl text-center text-slate-700 placeholder-slate-300 input-focus transition-all duration-500 serif h-32 resize-none"
+                    placeholder="Write what weighs on you..."></textarea>
+                
+                <div class="mt-12">
+                    <button onclick="processRelease()" 
+                        class="px-12 py-4 rounded-full border border-slate-200 text-slate-500 hover:text-slate-800 hover:border-slate-800 hover:bg-white transition-all duration-500 tracking-widest text-xs uppercase font-bold">
+                        Release Into Silence
+                    </button>
+                </div>
+            </div>
+
+            <!-- The Response View (Hidden initially) -->
+            <div id="response-view" class="hidden opacity-0 transition-all duration-1000 flex flex-col items-center">
+                <div class="glass-panel p-10 md:p-16 rounded-[40px] max-w-2xl">
+                    <p id="dynamic-message" class="serif text-3xl md:text-4xl text-slate-700 italic leading-snug"></p>
+                    <div class="h-px w-20 bg-slate-200 my-10 mx-auto"></div>
+                    <button onclick="resetSpace()" class="text-slate-400 hover:text-slate-600 transition-colors text-xs tracking-widest uppercase font-bold">
+                        Begin Anew
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <footer class="fixed bottom-10 text-slate-400 text-[10px] tracking-[0.3em] uppercase">
+        Quietly hosted on GitHub &bull; Just for you
+    </footer>
 
     <script>
-        async function getRelief() {
-            const input = document.getElementById('userInput').value;
-            const status = document.getElementById('status');
-            const resultBox = document.getElementById('resultBox');
-            const aiResponse = document.getElementById('aiResponse');
-            const sendBtn = document.getElementById('sendBtn');
+        const wisdom = [
+            "This moment is temporary. Your peace is permanent.",
+            "You are doing enough. You have always been enough.",
+            "Softness is not weakness; it is how we survive the storm.",
+            "Allow yourself the grace of a single breath. Just one.",
+            "The weight you carry is heavy, but you need not carry it alone today.",
+            "Rest is a productive act. Let your mind settle like fallen snow.",
+            "Beyond the noise, there is a quiet strength within you."
+        ];
 
-            if (!input) return;
+        function processRelease() {
+            const text = document.getElementById('userText').value;
+            if (!text.trim()) return;
 
-            status.innerText = "Listening...";
-            sendBtn.disabled = true;
+            const inputView = document.getElementById('input-view');
+            const responseView = document.getElementById('response-view');
+            const message = document.getElementById('dynamic-message');
 
-            try {
-                // This connects to the folder you created in GitHub
-                const response = await fetch('/api/relief', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: input })
-                });
+            // Animation sequence
+            inputView.style.opacity = '0';
+            inputView.style.transform = 'scale(0.95)';
 
-                const data = await response.json();
+            setTimeout(() => {
+                inputView.classList.add('hidden');
+                responseView.classList.remove('hidden');
                 
-                resultBox.classList.remove('hidden');
-                aiResponse.innerText = data.reply;
-                status.innerText = "";
-            } catch (error) {
-                aiResponse.innerText = "I'm here for you, but my connection is weak. Take a deep breath.";
-                resultBox.classList.remove('hidden');
-                status.innerText = "";
-            } finally {
-                sendBtn.disabled = false;
-            }
+                // Pick a unique message
+                message.innerText = wisdom[Math.floor(Math.random() * wisdom.length)];
+                
+                setTimeout(() => {
+                    responseView.style.opacity = '1';
+                    responseView.style.transform = 'translateY(0)';
+                }, 100);
+            }, 800);
+        }
+
+        function resetSpace() {
+            location.reload();
         }
     </script>
 </body>
 </html>
-
