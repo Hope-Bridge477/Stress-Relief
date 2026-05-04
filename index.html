@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sōzen | The Art of Release</title>
+    <title>Sōzen | Chromatic Peace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:italic,wght@0,300;1,300&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #1a1a1a;
-            --soft-blue: #e2e8f0;
-        }
-
         body {
             margin: 0;
             padding: 0;
-            background-color: #000; /* Deep focus background */
+            /* Animated Gradient Background */
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e293b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #fff;
             font-family: 'Montserrat', sans-serif;
             overflow: hidden;
@@ -25,136 +23,131 @@
             min-height: 100vh;
         }
 
-        /* The Liquid Aura - Animated Background */
-        .aura-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #000 100%);
-            z-index: -1;
-        }
-
-        .blob {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: linear-gradient(135deg, rgba(148, 163, 184, 0.2) 0%, rgba(30, 41, 59, 0.2) 100%);
-            filter: blur(80px);
-            border-radius: 50%;
-            animation: move 20s infinite alternate;
-            z-index: -1;
-        }
-
-        @keyframes move {
-            from { transform: translate(-10%, -10%); }
-            to { transform: translate(20%, 20%); }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .serif { font-family: 'Cormorant Garamond', serif; }
 
-        /* Elegant Container */
-        .zen-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 4rem;
-            border-radius: 100px 100px 0 0; /* Modern Architectural Shape */
-            text-align: center;
-            width: 100%;
-            max-width: 800px;
-            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        /* Glowing Orbs */
+        .orb {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 20s infinite alternate;
+        }
+        .orb-1 { background: #818cf8; top: -10%; left: -10%; }
+        .orb-2 { background: #2dd4bf; bottom: -10%; right: -10%; animation-delay: -5s; }
+        .orb-3 { background: #c084fc; top: 40%; right: 20%; animation-delay: -10s; }
+
+        @keyframes float {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(100px, 50px) scale(1.2); }
         }
 
+        /* Glass Container with Color-Border */
+        .zen-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 5rem 3rem;
+            border-radius: 40px;
+            text-align: center;
+            width: 90%;
+            max-width: 750px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Input highlight color */
         .input-area {
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid rgba(45, 212, 191, 0.3);
             width: 100%;
-            color: #fff;
-            font-size: 1.5rem;
+            color: #f0f9ff;
+            font-size: 1.8rem;
             padding: 1rem;
             text-align: center;
             outline: none;
-            transition: border-color 0.8s;
-        }
-
-        .input-area:focus {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
-        }
-
-        /* Button Styling */
-        .btn-zen {
-            margin-top: 3rem;
-            padding: 1.2rem 3rem;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: transparent;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            cursor: pointer;
             transition: all 0.5s;
         }
 
-        .btn-zen:hover {
-            background: #fff;
+        .input-area:focus {
+            border-bottom: 2px solid #2dd4bf;
+            text-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+        }
+
+        /* Button with dynamic color */
+        .btn-zen {
+            margin-top: 3rem;
+            padding: 1rem 4rem;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #2dd4bf, #818cf8);
             color: #000;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Hidden Class for Transitions */
-        .hidden-element {
-            opacity: 0;
-            transform: translateY(20px);
-            pointer-events: none;
+        .btn-zen:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(45, 212, 191, 0.4);
+            letter-spacing: 7px;
         }
 
-        .reveal {
-            opacity: 1;
-            transform: translateY(0);
+        .wisdom-gradient {
+            background: linear-gradient(to right, #f0f9ff, #2dd4bf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
 <body>
 
-    <div class="aura-bg">
-        <div class="blob" style="top: 10%; left: 10%;"></div>
-        <div class="blob" style="bottom: 10%; right: 10%; animation-delay: -5s;"></div>
-    </div>
+    <!-- Animated Color Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
 
     <div id="main-container" class="zen-card">
-        <div id="prompt-view">
-            <h2 class="text-xs tracking-[0.5em] uppercase text-slate-400 mb-8 font-light">The Quiet Space</h2>
-            <h1 class="serif text-5xl md:text-7xl italic font-light mb-12">Leave your <span class="font-normal">burden</span> here.</h1>
+        <div id="prompt-view" class="transition-all duration-1000">
+            <h2 class="text-[0.6rem] tracking-[0.8em] uppercase text-teal-300 mb-6 font-bold">Atmospheric Relief</h2>
+            <h1 class="serif text-5xl md:text-6xl italic font-light mb-12 leading-tight">
+                Release your <span class="text-teal-200">tension</span> into the light.
+            </h1>
             
-            <textarea id="userInput" class="serif input-area" placeholder="What is heavy on your soul?"></textarea>
+            <textarea id="userInput" class="serif input-area" placeholder="What is clouding your mind?"></textarea>
             
             <button onclick="transformEnergy()" class="btn-zen">Exhale</button>
         </div>
 
-        <div id="response-view" class="hidden-element absolute inset-0 flex flex-col items-center justify-center p-12 text-center">
-            <h3 id="wisdom-text" class="serif text-4xl md:text-5xl italic leading-relaxed text-slate-200"></h3>
-            <div class="w-12 h-[1px] bg-white/30 my-10"></div>
-            <button onclick="resetSpace()" class="text-[0.6rem] tracking-[0.4em] uppercase text-slate-500 hover:text-white transition-all">Dissolve</button>
+        <div id="response-view" class="hidden opacity-0 translate-y-10 transition-all duration-1000 flex flex-col items-center">
+            <h3 id="wisdom-text" class="serif text-4xl md:text-5xl italic leading-relaxed wisdom-gradient"></h3>
+            <div class="w-20 h-[2px] bg-gradient-to-right from-teal-400 to-indigo-400 my-12"></div>
+            <button onclick="resetSpace()" class="text-[0.7rem] tracking-[0.5em] uppercase text-teal-200 hover:text-white transition-all font-bold">Begin New Cycle</button>
         </div>
     </div>
 
-    <footer class="fixed bottom-8 text-[0.6rem] tracking-[0.6em] uppercase text-slate-600">
-        Sōzen &bull; Mindful Architecture
-    </footer>
-
     <script>
         const teachings = [
-            "You are the sky. The thoughts are just weather.",
-            "If it is out of your hands, it deserves a freedom from your mind.",
-            "You do not have to be 'okay' to be worthy of peace.",
-            "The stars can only shine because of the darkness you fear.",
-            "In the middle of movement and chaos, keep stillness inside of you.",
-            "Your strength is not in how much you carry, but in what you let go."
+            "Your breath is an anchor in this colorful world.",
+            "Let the heavy thoughts dissolve like clouds in a blue sky.",
+            "You are not your stress; you are the one observing it.",
+            "Peace is not the absence of storm, but the calm within it.",
+            "Allow yourself to bloom at your own pace.",
+            "Every sunset is an opportunity to reset your soul."
         ];
 
         function transformEnergy() {
@@ -164,40 +157,28 @@
             const promptView = document.getElementById('prompt-view');
             const responseView = document.getElementById('response-view');
             const wisdomText = document.getElementById('wisdom-text');
-            const container = document.getElementById('main-container');
 
-            // Phase 1: Dissolve the input
-            promptView.style.transition = "all 1s ease";
-            promptView.classList.add('hidden-element');
-
-            // Phase 2: Transform the card
+            // Fade out
+            promptView.classList.add('opacity-0', 'translate-y-[-20px]');
+            
             setTimeout(() => {
-                promptView.style.display = "none";
-                responseView.style.position = "relative";
-                responseView.classList.add('reveal');
+                promptView.classList.add('hidden');
+                responseView.classList.remove('hidden');
                 
-                // Set the wisdom
+                // Show message
                 wisdomText.innerText = teachings[Math.floor(Math.random() * teachings.length)];
-            }, 1000);
-        }
-
-        function resetSpace() {
-            const container = document.getElementById('main-container');
-            container.style.opacity = "0";
-            setTimeout(() => {
-                location.reload();
+                
+                // Fade in
+                setTimeout(() => {
+                    responseView.classList.remove('opacity-0', 'translate-y-10');
+                }, 50);
             }, 800);
         }
 
-        // Mouse interaction for Aura
-        document.addEventListener('mousemove', (e) => {
-            const blobs = document.querySelectorAll('.blob');
-            const x = (e.clientX / window.innerWidth) * 50;
-            const y = (e.clientY / window.innerHeight) * 50;
-            blobs.forEach(b => {
-                b.style.transform = `translate(${x}px, ${y}px)`;
-            });
-        });
+        function resetSpace() {
+            document.getElementById('main-container').style.opacity = "0";
+            setTimeout(() => { location.reload(); }, 500);
+        }
     </script>
 </body>
 </html>
